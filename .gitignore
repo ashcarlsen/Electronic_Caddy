@@ -1,0 +1,16 @@
+.git
+.git\
+.vscode
+.vscode\
+*.exe
+*.scvd
+*.drow9
+*.uvoptx
+*.uvprojx
+DebugConfig/
+Listings/
+Objects/
+*.u0916757
+RTE\
+*.adminstrator
+RTE/
