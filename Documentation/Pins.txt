@@ -1,0 +1,11 @@
+GPS:
+PB7 - RX
+
+LCD:
+PB0-3 data
+PC10 E
+PC11 RW
+PC12 RS
+
+Keypad:
+

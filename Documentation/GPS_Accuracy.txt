@@ -1,0 +1,20 @@
+Location 1:
+	Lat: 4219.5453
+	Lon: 11118.5848
+	Alt: 1829.4 M
+
+Location 2:
+	Lat: 4219.5474
+	Lon: 11118.5687
+	Alt: 1830.0 M
+
+Expected Distance 59.6 feet -> 19.86667 yds
+
+Actual Calculated Distance using Haversine formula:
+23.7762 m -> 26.0002 yds
+
+Difference:
+6.1333 yds
+
+Overall, fairly accurate for $25 GPS. Not entirely happy that we are that far off. I'd prefer it if we could cut that difference below 3 yards.
+
