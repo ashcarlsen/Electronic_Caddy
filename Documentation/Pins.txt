@@ -1,5 +1,6 @@
 GPS:
 PB7 - RX
+NOTE: Maybe PC4-5 for USART3 instead of USART1
 
 LCD:
 PB0-3 data
@@ -9,3 +10,9 @@ PC12 RS
 
 Keypad:
 
+PB4-7 Rows: Open-drain, output
+PB8-11 Cols: Input, external pull-up 2.2k and 3.3V
+NOTE: Maybe use internal pull-up instead
+
+Motor:
+TBD - Most likely A pins
