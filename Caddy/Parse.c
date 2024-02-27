@@ -39,6 +39,15 @@ int parseGPGGA(char *string, char **fields)
    return --i;
 }
 
+double nmeaToDeg(const char* val)
+{
+	char *eptr;
+	double temp = strtod(val, eptr); 
+	double output = (int)(temp/100);
+	output += (fmod(temp,100)/60);
+	return output;
+}
+
 void getLatString(char* lat, int len, char* lats)
 {
 	for(int i = 0; i < 20; i++)

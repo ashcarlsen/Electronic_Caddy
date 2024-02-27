@@ -23,6 +23,7 @@ int main(void)
 	char lon[20] = {0};
 	char alt[20] = {0};
 	char time[20] = {0};
+	double latitude = 0.0f;
 	for(int i = 0; i < 20; i++)
 	{
 		lat[i] = '\0';
@@ -39,6 +40,7 @@ int main(void)
 		getLonString(fields[4], strlen(fields[4]), lon);
 		getAltString(fields[9], strlen(fields[9]), alt);
 		getTimeString(fields[1], strlen(fields[1]), time);
+		latitude = nmeaToDeg(fields[2]);
 		LCD_Clear();
 		LCD_DisplayString(0, lat, 20);
 		LCD_DisplayString(1, lon, 20);
