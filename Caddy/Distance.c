@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #define DISTANCE_IN_YARDS 6974880
+#define PI 3.141592
 
 double distanceYds(double latDeg1, double lonDeg1, double latDeg2, double lonDeg2)
 {
@@ -26,6 +27,6 @@ double distanceYds(double latDeg1, double lonDeg1, double latDeg2, double lonDeg
 double degToRad(double value)
 {
     double rad = 0.0;
-    rad = (value * M_PI)/180.0;
+    rad = (value * PI)/180.0;
     return rad;
 }
