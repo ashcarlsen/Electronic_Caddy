@@ -1,6 +1,5 @@
 GPS:
-PB7 - RX
-NOTE: Maybe PC4-5 for USART3 instead of USART1
+PC5 - RX
 
 LCD:
 PB0-3 data
