@@ -22,4 +22,6 @@ void flash_erase_page(uint8_t bank, uint8_t page);
 void unlock_flash(void);
 void lock_flash(void);
 
+void readClubs(uint16_t* clubs);
+void writeClubs(uint16_t* clubs);
 #endif

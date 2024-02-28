@@ -82,27 +82,27 @@ void flash_lock_option_bytes(void)
  */
 void flash_program_double_word(uint32_t address, uint64_t data)
 {
-				unlock_flash();
-        /* Ensure that all flash operations are complete. */
-        flash_wait_for_last_operation();
+	unlock_flash();
+  /* Ensure that all flash operations are complete. */
+  flash_wait_for_last_operation();
  
-        /* Enable writes to flash. */
-        FLASH->CR |= FLASH_CR_PG;
+  /* Enable writes to flash. */
+  FLASH->CR |= FLASH_CR_PG;
  
-        /* Program the each word separately. */
-        MMIO32(address) = (uint32_t)data;
-        MMIO32(address+4) = (uint32_t)(data >> 32);
+  /* Program the each word separately. */
+  MMIO32(address) = (uint32_t)data;
+  MMIO32(address+4) = (uint32_t)(data >> 32);
  
-        /* Wait for the write to complete. */
-        flash_wait_for_last_operation();
+  /* Wait for the write to complete. */
+  flash_wait_for_last_operation();
 				
-				/* Wait for the EOP flag to be set then clear it */
-				while((FLASH->SR & FLASH_SR_EOP) == FLASH_SR_EOP);
-				FLASH->SR &= ~FLASH_SR_EOP;
-	
-        /* Disable writes to flash. */
-        FLASH->CR &= ~FLASH_CR_PG;
-				lock_flash();
+	/* Wait for the EOP flag to be set then clear it */
+	while((FLASH->SR & FLASH_SR_EOP) == FLASH_SR_EOP);
+	FLASH->SR &= ~FLASH_SR_EOP;
+	flash_clear_status_flags();
+  /* Disable writes to flash. */
+  FLASH->CR &= ~FLASH_CR_PG;
+	lock_flash();
 }
 
 void unlock_flash(void)
@@ -119,6 +119,7 @@ void lock_flash(void)
 
 void flash_erase_page(uint8_t bank, uint8_t page)
 {
+	unlock_flash();
 	flash_wait_for_last_operation();
 	flash_clear_status_flags();
 	FLASH->CR |= FLASH_CR_PER;
@@ -134,5 +135,42 @@ void flash_erase_page(uint8_t bank, uint8_t page)
 	FLASH->CR |= FLASH_CR_STRT;
 	flash_wait_for_last_operation();
 	FLASH->CR &= ~FLASH_CR_PER;
+	lock_flash();
 }
-	
+
+void readClubs(uint16_t* clubs)
+{
+	uint64_t data = 0;
+	uint16_t copy[12];
+	for(int i = 0; i < 3; i++)
+	{
+		data = (*(volatile uint64_t *)(0x080FF800+8*i));
+		copy[i*4] = (uint16_t)data;
+		data = data >> 16;
+		copy[i*4+1] = (uint16_t)data;
+		data = data >> 16;
+		copy[i*4+2] = (uint16_t)data;
+		data = data >> 16;
+		copy[i*4+3] = (uint16_t)data;
+	}
+	for(int i = 0; i < 12; i++)
+	{
+		clubs[i] = copy[i];
+	}
+}
+
+void writeClubs(uint16_t* clubs)
+{
+	flash_erase_page(2, 255);
+	uint64_t data = 0;
+	uint8_t offset = 0;
+	for(int i = 0; i < 12; i = i+4)
+	{
+		data = clubs[i];
+		data |= ((uint64_t)clubs[i+1] << 16);
+		data |= ((uint64_t)clubs[i+2] << 32);
+		data |= ((uint64_t)clubs[i+3] << 48);
+		flash_program_double_word(0x080FF800+offset, data);
+		offset += 8;
+	}
+}
