@@ -1,5 +1,6 @@
 #include "keypad.h"
 #include "stm32l476xx.h" 
+#include "Timer.h"
 
 static const unsigned int ODR_values[4] = {0x70,0xB0,0xD0,0xE0};
 
@@ -10,7 +11,7 @@ char keypadPoll(void)
     for(i = 0; i < 4; i++){
         GPIOB->ODR |=0xF0;
         GPIOB->ODR &= ODR_values[i];
-		keydelay_ms(5);
+				delay_ms(5);
         IDR_value = GPIOB->IDR;
         IDR_value = IDR_value>>8;
         IDR_value &= 0x0000000FU;
@@ -44,3 +45,13 @@ char keypadPoll(void)
     }
     return key;
 }
+
+void SetupKeypad(void)
+{
+	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN;	//enable clock on GPIOB,GPIOC,GPIOA
+	GPIOB->MODER &= 0xFFFF00FF; // Setup B4-7 as outputs
+	GPIOB->MODER |= 0x00005500;
+	GPIOB->MODER &= 0xFF00FFFF; //GPIOB 8-11 inputs
+	GPIOB->OTYPER |= 0x000000F0; // Set PB4-7 as output open-drain
+}
+	

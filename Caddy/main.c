@@ -4,6 +4,7 @@
 #include "LCD.h"
 #include "Parse.h"
 #include "Timer.h"
+#include "keypad.h"
 
 static char rxBuffer[BUFFER_SIZE] ={0};
 
@@ -17,6 +18,7 @@ int main(void)
 	LCD_Init();
 	LCD_Clear();
 	GPS_Init();
+	SetupKeypad();
 	char data[GPGGA_SIZE];
 	char *fields[15];
 	char lat[20] = {0};
@@ -31,6 +33,7 @@ int main(void)
 		alt[i] = '\0';
 		time[i] = '\0';
 	}
+	char key;
   while(1)
 	{
 		GPS_Read_NMEA(rxBuffer, BUFFER_SIZE);
@@ -41,11 +44,16 @@ int main(void)
 		getAltString(fields[9], strlen(fields[9]), alt);
 		getTimeString(fields[1], strlen(fields[1]), time);
 		latitude = nmeaToDeg(fields[2]);
-		LCD_Clear();
 		LCD_DisplayString(0, lat, 20);
 		LCD_DisplayString(1, lon, 20);
 		LCD_DisplayString(2, alt, 20);
 		LCD_DisplayString(3, time, 20);
+		key = keypadPoll();
+		while(key == 'z')
+		{
+			key = keypadPoll();
+		}
+		LCD_Clear();
   }
 }
 
