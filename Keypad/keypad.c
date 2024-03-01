@@ -1,6 +1,7 @@
 #include "keypad.h"
 #include "stm32l476xx.h" 
 #include "Timer.h"
+#include <stdlib.h>
 
 static const unsigned int ODR_values[4] = {0x70,0xB0,0xD0,0xE0};
 
@@ -11,7 +12,7 @@ char keypadPoll(void)
     for(i = 0; i < 4; i++){
         GPIOB->ODR |=0xF0;
         GPIOB->ODR &= ODR_values[i];
-				delay_ms(5);
+		delay_ms(5);
         IDR_value = GPIOB->IDR;
         IDR_value = IDR_value>>8;
         IDR_value &= 0x0000000FU;
@@ -55,3 +56,40 @@ void SetupKeypad(void)
 	GPIOB->OTYPER |= 0x000000F0; // Set PB4-7 as output open-drain
 }
 	
+int keypadInt(void)
+{
+    char buffer[10];
+		for(int i = 0; i < 10; i++)
+		{
+			buffer[i] = '\0';
+		}
+    int index = 0;
+    char data = keypadPoll();
+		char* eptr;
+    while(data != '#' && index < 10)
+    {
+        data = keypadPoll();
+        switch(data)
+        {
+            case 'A':
+            case 'B':
+            case 'C':
+            case 'D':
+            case '*':
+            case '#': break;
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9': buffer[index] = data; index++; break;
+            default: break;
+        }
+				delay_ms(70); // this is to avoid double inputs
+    }
+    return (int)strtol(buffer, &eptr, 10);
+}
