@@ -39,7 +39,7 @@ void GPS_Read_NMEA(char *buffer, uint32_t size)
 				for(int j = i+1; j < size; j++)
 				{
 					buffer[j] = '\0';
-				}			
+				}
 				i = size;
 			}
 		}
@@ -57,8 +57,6 @@ void GPS_Init(void){
 	USART3->CR1 &= ~(USART_CR1_OVER8); //clear over8 bit to 16 oversampling
 	USART3->BRR = 0x682; //9600 baud
 	USART3->CR1 |= (USART_CR1_RE); //enable transmit and receive
-	USART3->CR1 |= USART_CR1_UE; //enable USART
-	while((USART3->ISR & USART_ISR_REACK) == 0); //recieve enable flag
 }
 
 void GPS_GPIO_Init(void){

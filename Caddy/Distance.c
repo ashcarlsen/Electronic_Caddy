@@ -5,7 +5,7 @@
 #define DISTANCE_IN_YARDS 6974880
 #define PI 3.141592
 
-double distanceYds(double latDeg1, double lonDeg1, double latDeg2, double lonDeg2)
+uint16_t distanceYds(double latDeg1, double lonDeg1, double latDeg2, double lonDeg2)
 {
     double distance = 0.0;
     //Compute the Haversine distance equation with given lat/lon values in degrees
@@ -19,8 +19,8 @@ double distanceYds(double latDeg1, double lonDeg1, double latDeg2, double lonDeg
     temp = sin(latRad1)*sin(latRad2);
     temp2 = cos(latRad1)*cos(latRad2)*cos(lonRad2-lonRad1);
     distance = acos(temp+temp2) * DISTANCE_IN_YARDS;
-    // output the total distance in yards
-    return distance;
+    // output the total distance in yards rounded up
+    return (uint16_t)ceil(distance);
 }
 
 //convert degrees to radians

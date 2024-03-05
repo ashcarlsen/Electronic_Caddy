@@ -1,7 +1,7 @@
 #ifndef GPS_H
 #define GPS_H
 #include "stm32l476xx.h"
-#define BUFFER_SIZE 350
+#define BUFFER_SIZE 300
 #define GPGGA_SIZE 96
 
 struct GPPGA

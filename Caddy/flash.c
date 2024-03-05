@@ -66,8 +66,7 @@ void flash_clear_status_flags(void)
  * This disables write access to the option bytes. It is locked by default on
  * reset.
  */
-void flash_lock_option_bytes(void)
-{
+void flash_lock_option_bytes(void){
         FLASH->CR |= FLASH_CR_OPTLOCK;
 }
  

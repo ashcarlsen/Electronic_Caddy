@@ -3,5 +3,8 @@
 
 void SetupKeypad(void);
 char keypadPoll(void); //Set ouput data register
+int keypadInt(void);
+char getChar(void);
+char getAlpha(void);
 
 #endif

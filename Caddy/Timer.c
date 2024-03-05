@@ -1,7 +1,7 @@
 #include "Timer.h"
 #include "stm32l476xx.h"
 
-static int s_count;
+static volatile int s_count;
 
 void SetupTIM4(void)
 {
