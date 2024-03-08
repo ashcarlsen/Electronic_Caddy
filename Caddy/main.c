@@ -1,7 +1,7 @@
 #include "stm32l476xx.h"
 #include <string.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "GPS.h"
 #include "LCD.h"
 #include "Parse.h"
@@ -9,13 +9,19 @@
 #include "keypad.h"
 #include "flash.h"
 #include "Course.h"
+#include "UTC.h"
 
 static char rxBuffer[BUFFER_SIZE] ={0};
 static uint16_t clubs[12] = {0};
 static uint8_t courseNumber = 0;
 static uint8_t holeNumber = 0;
 static const struct course courseList[4] = {
-{.name = "Engineering Test", .latitudes = {41.74866334}, .longitudes = {-111.82016834}, .altitudes = {0}},
+{
+	.name = "Engineering Test", 
+	.latitudes = {41.748608, 41.748473, 41.748500}, 
+	.longitudes = {-111.819925, -111.819952, -111.819737}, 
+	.altitudes = {0, 0, 0}
+},
 {.name = "Logan River Golf", .latitudes = {0}, .longitudes = {0}, .altitudes = {0}},
 {.name = "Preston Golf", .latitudes = {0}, .longitudes = {0}, .altitudes = {0}},
 {.name = "Montpelier Golf", .latitudes = {0}, .longitudes = {0}, .altitudes = {0}},
@@ -25,6 +31,8 @@ void mainMenu(void);
 void editClubs(void);
 void selectCourse(void);
 void play(void);
+void playManual(void);
+uint8_t chooseClub(uint16_t distance);
 
 int main(void)
 {
@@ -42,7 +50,7 @@ int main(void)
   while(1)
 	{
 		mainMenu();
-		play();
+		playManual();
 		LCD_Clear();
   }
 }
@@ -136,16 +144,17 @@ void selectCourse(void)
 void play(void)
 {
 	LCD_Clear();
-	char key = 0;
-	holeNumber = 0;
+	holeNumber = 1;
 	char data[GPGGA_SIZE];
 	char *fields[15];
 	double latitude = 0.0f;
 	double longitude = 0.0f;
 	double courseLat = 0.0f;
 	double courseLon = 0.0f;
+	char key = 0;
 	do
 	{
+		key = 0;
 		GPS_Read_NMEA(rxBuffer, BUFFER_SIZE);
 		getGPGGA(rxBuffer, data, GPGGA_SIZE);
 		parseGPGGA(data, fields);
@@ -155,29 +164,119 @@ void play(void)
 		{
 			longitude = longitude * -1;
 		}
-		courseLat = courseList[courseNumber].latitudes[holeNumber];
-		courseLon = courseList[courseNumber].longitudes[holeNumber];
-		uint16_t distance = distanceYds(latitude, longitude, courseLat, courseLon);
-		if(distance > 999)
+		courseLat = courseList[courseNumber].latitudes[holeNumber-1];
+		courseLon = courseList[courseNumber].longitudes[holeNumber-1];
+		int fix = atoi(fields[6]);
+		if(fix != 0)
 		{
-			distance = 0;
+			uint16_t distance = distanceYds(latitude, longitude, courseLat, courseLon);
+			if(distance > 999)
+			{
+				distance = 0;
+			}
+			uint8_t index = chooseClub(distance);
+			char holeInfo[20] = {0};
+			char distInfo[20] = {0};
+			char timeInfo[20] = {0};
+			sprintf(holeInfo, "Hole: %2d", holeNumber);
+			sprintf(distInfo, "%3d yards  Club: %2d", distance, index);
+			utcToMST(fields[1], timeInfo);
+			LCD_DisplayString(0, courseList[courseNumber].name, 20);
+			LCD_DisplayString(1, holeInfo, 20);
+			LCD_DisplayString(2, distInfo, 20);
+			LCD_DisplayString(3, timeInfo, 20);
 		}
-		char holeInfo[20] = {0};
-		char distInfo[20] = {0};
-		sprintf(holeInfo, "Hole: %2d", holeNumber);
-		sprintf(distInfo, "Distance: %3d", distance);
-		LCD_DisplayString(0, courseList[courseNumber].name, 20);
-		LCD_DisplayString(1, holeInfo, 20);
-		LCD_DisplayString(2, distInfo, 20);
+		else
+		{
+			LCD_Clear();
+			LCD_DisplayString(0, "No GPS Fix", 10);
+			delay_ms(1000);
+			LCD_Clear();
+		}
 		key = keypadPoll();
-		if(key == 'A' && holeNumber < 18)
+		switch(key)
 		{
-			holeNumber++;
-		}
-		else if(key == 'B' && holeNumber > 0)
-		{
-			holeNumber--;
+			case 'A': if(holeNumber < 18){holeNumber--;} break;
+			case 'B': if(holeNumber > 1){holeNumber++;} break;
+			default: break;
 		}
 	} while(key != '*');
 }
 
+void playManual(void)
+{
+	LCD_Clear();
+	holeNumber = 1;
+	char data[GPGGA_SIZE];
+	char *fields[15];
+	double latitude = 0.0f;
+	double longitude = 0.0f;
+	double courseLat = 0.0f;
+	double courseLon = 0.0f;
+	char key = 0;
+	do
+	{
+		key = 'z';
+		GPS_Read_NMEA(rxBuffer, BUFFER_SIZE);
+		getGPGGA(rxBuffer, data, GPGGA_SIZE);
+		parseGPGGA(data, fields);
+		latitude = nmeaToDeg(fields[2]);
+		longitude = nmeaToDeg(fields[4]);
+		if(strcmp(fields[5], "W") == 0)
+		{
+			longitude = longitude * -1;
+		}
+		courseLat = courseList[courseNumber].latitudes[holeNumber-1];
+		courseLon = courseList[courseNumber].longitudes[holeNumber-1];
+		int fix = atoi(fields[6]);
+		if(fix != 0)
+		{
+			uint16_t distance = distanceYds(latitude, longitude, courseLat, courseLon);
+			if(distance > 999)
+			{
+				distance = 0;
+			}
+			uint8_t index = chooseClub(distance);
+			char holeInfo[20] = {0};
+			char distInfo[20] = {0};
+			sprintf(holeInfo, "Hole: %2d", holeNumber);
+			sprintf(distInfo, "%3d yards  Club: %2d", distance, index);
+			LCD_DisplayString(0, courseList[courseNumber].name, 20);
+			LCD_DisplayString(1, holeInfo, 20);
+			LCD_DisplayString(2, distInfo, 20);
+			key = getChar();
+			switch(key)
+			{
+				case 'A' : if(holeNumber < 18){holeNumber++;} break;
+				case 'B' : if(holeNumber > 1){holeNumber--;} break;
+				default: break;
+			}
+		}
+		else
+		{
+			LCD_Clear();
+			LCD_DisplayString(0, "No GPS Fix", 10);
+			delay_ms(1000);
+			LCD_Clear();
+			key = keypadPoll();
+		}
+	} while(key != '*');
+}
+
+uint8_t chooseClub(uint16_t distance)
+{
+	uint16_t diff = 65535;
+	uint16_t newDiff;
+	uint8_t index = 0;
+	for(int i = 0; i < 12; i++)
+	{
+		newDiff = abs(clubs[i]-distance);
+		if(newDiff <= diff)
+		{
+			diff = newDiff;
+			index = i;
+		}
+	}
+	// Add one because Club numbers start at 1
+	return index + 1;
+}

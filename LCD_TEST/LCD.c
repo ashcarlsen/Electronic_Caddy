@@ -10,11 +10,11 @@ GPIOC: LCD
 	11: RW
 	12: RS
 =======================================================*/
-#include "Lcd.h"
-#include "stm32l476xx.h"
+#include "LCD.h"
 #include "Timer.h"
+#include "stm32l476xx.h"
 
-void putNibble(unsigned char c) {
+void putNibble(uint8_t c) {
 	GPIOB->ODR &= 0xFFFFFFF0; //0 out last character 
 	GPIOB->ODR |= c;	// 0000 c
 }
@@ -22,14 +22,14 @@ void putNibble(unsigned char c) {
 void pulse() {
 	GPIOC->ODR |= 1<<10;
 	delay_ms(1);
-	GPIOC->ODR &= (unsigned int) ~(1<<10);
+	GPIOC->ODR &= (uint32_t) ~(1<<10);
 	delay_ms(1);
 }
 
 
-void LCD_WriteCom(unsigned char com) {
-	unsigned char c;
-	GPIOC->ODR &= (unsigned int)~(1<<12); //Set RS to 0
+void LCD_WriteCom(uint8_t com) {
+	uint8_t c;
+	GPIOC->ODR &= (uint32_t)~(1<<12); //Set RS to 0
 	c = com >> 4;
 	putNibble(c); //put first nibble into D4-D7 on LCD
  	pulse();	//enable then disable E; Latch D4-D7 on LCD
@@ -40,7 +40,7 @@ void LCD_WriteCom(unsigned char com) {
 	GPIOC->ODR |= 1<<12; //Default RS to 1
 }
 
-void LCD_WriteData(unsigned char dat) {
+void LCD_WriteData(uint8_t dat) {
 	
 	putNibble(dat >> 4); //put first nibble into D4-D7 on LCD
 	pulse();	//enable then disable E; Latch D4-D7 on LCD
@@ -59,29 +59,27 @@ void LCD_Init(void){
 	GPIOB->ODR &= 0xFFFFFFF0;  //0 output on GPIOB 0-3;
 	delay_ms(30);
 	LCD_WriteCom(0x2);	//return home
-	delay_ms(2);
+	delay_ms(1);
 	LCD_WriteCom(0x28);	//set to 4-bit mode 2 lines and 5x8 font
-	delay_ms(2);
+	delay_ms(1);
 	LCD_WriteCom(0x0c);	//turn off cursor and blink display on
-	delay_ms(2);
+	delay_ms(1);
 	LCD_WriteCom(0x06);	//clear
-	delay_ms(2);
+	delay_ms(1);
 	LCD_WriteCom(0x01);	//set to entry mode
-	delay_ms(2);
+	delay_ms(1);
 	LCD_WriteCom(0x01);
-	delay_ms(2);
+	delay_ms(1);
 }
 
 void LCD_Clear(void){
 	GPIOB->ODR &= 0xFFFFFFF0;
   LCD_WriteCom(0x01);		//clear
 	delay_ms(2);
-	LCD_WriteCom(0x01);
-	delay_ms(2);
 }
 
-void LCD_DisplayString(unsigned int line, unsigned char *ptr) {
-	unsigned char lineNum = 0x80;			// 1000 0000 is base command to write to 0x00. Need the 1 in that bit spot
+void LCD_DisplayString(uint32_t line, char *str, unsigned int length) {
+	uint8_t lineNum = 0x80;			// 1000 0000 is base command to write to 0x00. Need the 1 in that bit spot
 	switch(line)
 	{
 		case 0: 
@@ -108,9 +106,12 @@ void LCD_DisplayString(unsigned int line, unsigned char *ptr) {
 	}
 	LCD_WriteCom(lineNum);					//send the command to move where the display memory is 
 	delay_ms(2);
-	int i;
-	for(i = 0; ptr[i]!= '\0'; i++){	//for each character, write the data
-		LCD_WriteData(ptr[i]);
-		delay_ms(1);
+	for(int i = 0; i < length; i++)
+	{
+		if(str[i] != '\0')
+		{
+			LCD_WriteData(str[i]);
+			delay_ms(2);
+		}
 	}
 }
