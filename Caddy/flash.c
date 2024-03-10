@@ -173,3 +173,26 @@ void writeClubs(uint16_t* clubs)
 		offset += 8;
 	}
 }
+
+void readSettings(uint16_t* settings)
+{
+	uint64_t data = 0;
+	uint16_t copy[2];
+	data = (*(volatile uint64_t *)(0x08080000));
+	copy[0] = (uint16_t)data;
+	data = data >> 16;
+	copy[1] = (uint16_t)data;
+	for(int i = 0; i < 2; i++)
+	{
+		settings[i] = copy[i];
+	}
+}
+
+void writeSettings(uint16_t* settings)
+{
+	flash_erase_page(2, 1);
+	uint64_t data = 0;
+	data = settings[0];
+	data |= ((uint64_t)settings[1] << 16);
+	flash_program_double_word(0x08080000, data);
+}

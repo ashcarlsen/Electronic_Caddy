@@ -11,10 +11,15 @@
 #include "Course.h"
 #include "UTC.h"
 
+#define MODE_INDEX 0
+#define PREF_INDEX 1
+
 static char rxBuffer[BUFFER_SIZE] ={0};
 static uint16_t clubs[12] = {0};
 static uint8_t courseNumber = 0;
 static uint8_t holeNumber = 0;
+static uint16_t settings[2] = {0};
+
 static const struct course courseList[4] = {
 {
 	.name = "Engineering Test", 
@@ -29,8 +34,8 @@ static const struct course courseList[4] = {
 
 void mainMenu(void);
 void editClubs(void);
+void editSettings(void);
 void selectCourse(void);
-void play(void);
 void playManual(void);
 uint8_t chooseClub(uint16_t distance);
 
@@ -46,6 +51,7 @@ int main(void)
 	GPS_Init();
 	SetupKeypad();
 	readClubs(clubs);
+	readSettings(settings);
 
   while(1)
 	{
@@ -59,13 +65,14 @@ void mainMenu(void)
 {
 	char selection = '\0';
 	LCD_DisplayString(0, "     Main Menu:", 15);
-	LCD_DisplayString(2, "1. Select Course\0", 17);
-	LCD_DisplayString(3, "2. Edit Yardages\0", 17); 
+	LCD_DisplayString(1, "1. Select Course\0", 17);
+	LCD_DisplayString(2, "2. Edit Yardages\0", 17); 
+	LCD_DisplayString(3, "3. Edit Settings\0", 17);
 	selection = keypadPoll();
 	while(selection == 'z')
 	{ 
 		selection = keypadPoll();
-		if(!(selection == '1' || selection == '2'))
+		if(!(selection == '1' || selection == '2' || selection == '3'))
 		{
 			selection = 'z';
 		}
@@ -76,10 +83,15 @@ void mainMenu(void)
 		LCD_DisplayString(0, "Select Course", 13);
 		selectCourse();
 	}
-	else
+	else if(selection == '2')
 	{
 		LCD_DisplayString(0, "Edit Yardages", 13);
 		editClubs();
+	}
+	else
+	{
+		LCD_DisplayString(0, "Edit Settings", 13);
+		editSettings();
 	}
 }
 
@@ -115,6 +127,61 @@ void editClubs(void)
 	writeClubs(clubs);
 }
 
+void editSettings(void)
+{
+	char key = 0;
+	char buffer[20] = {0};
+	do
+	{
+		LCD_Clear();
+		LCD_DisplayString(0, "Edit Mode", 9);
+		LCD_DisplayString(1, "Manual Mode: A", 14);
+		LCD_DisplayString(2, "Auto Mode: B", 12);
+		key = getChar();
+		if(key == 'A')
+		{
+			settings[MODE_INDEX] = 1;
+		}
+		else if(key == 'B')
+		{
+			settings[MODE_INDEX] = 0;
+		}
+		else if(key == '*')
+		{
+			key = 1;
+		}
+		else
+		{
+			key = 0;
+		}
+	} while(key == 0);
+	do
+	{
+		LCD_Clear();
+		LCD_DisplayString(0, "Edit Preference", 15);
+		LCD_DisplayString(1, "Club Up: A", 10);
+		LCD_DisplayString(2, "Club Down: B", 12);
+		key = getChar();
+		if(key == 'A')
+		{
+			settings[PREF_INDEX] = 1;
+		}
+		else if(key == 'B')
+		{
+			settings[PREF_INDEX] = 0;
+		}
+		else if(key == '*')
+		{
+			key = 1;
+		}
+		else
+		{
+			key = 0;
+		}
+	} while(key == 0);
+	writeSettings(settings);
+}
+
 void selectCourse(void)
 {
 	char key;
@@ -141,67 +208,6 @@ void selectCourse(void)
 	}
 }
 
-void play(void)
-{
-	LCD_Clear();
-	holeNumber = 1;
-	char data[GPGGA_SIZE];
-	char *fields[15];
-	double latitude = 0.0f;
-	double longitude = 0.0f;
-	double courseLat = 0.0f;
-	double courseLon = 0.0f;
-	char key = 0;
-	do
-	{
-		key = 0;
-		GPS_Read_NMEA(rxBuffer, BUFFER_SIZE);
-		getGPGGA(rxBuffer, data, GPGGA_SIZE);
-		parseGPGGA(data, fields);
-		latitude = nmeaToDeg(fields[2]);
-		longitude = nmeaToDeg(fields[4]);
-		if(strcmp(fields[5], "W") == 0)
-		{
-			longitude = longitude * -1;
-		}
-		courseLat = courseList[courseNumber].latitudes[holeNumber-1];
-		courseLon = courseList[courseNumber].longitudes[holeNumber-1];
-		int fix = atoi(fields[6]);
-		if(fix != 0)
-		{
-			uint16_t distance = distanceYds(latitude, longitude, courseLat, courseLon);
-			if(distance > 999)
-			{
-				distance = 0;
-			}
-			uint8_t index = chooseClub(distance);
-			char holeInfo[20] = {0};
-			char distInfo[20] = {0};
-			char timeInfo[20] = {0};
-			sprintf(holeInfo, "Hole: %2d", holeNumber);
-			sprintf(distInfo, "%3d yards  Club: %2d", distance, index);
-			utcToMST(fields[1], timeInfo);
-			LCD_DisplayString(0, courseList[courseNumber].name, 20);
-			LCD_DisplayString(1, holeInfo, 20);
-			LCD_DisplayString(2, distInfo, 20);
-			LCD_DisplayString(3, timeInfo, 20);
-		}
-		else
-		{
-			LCD_Clear();
-			LCD_DisplayString(0, "No GPS Fix", 10);
-			delay_ms(1000);
-			LCD_Clear();
-		}
-		key = keypadPoll();
-		switch(key)
-		{
-			case 'A': if(holeNumber < 18){holeNumber--;} break;
-			case 'B': if(holeNumber > 1){holeNumber++;} break;
-			default: break;
-		}
-	} while(key != '*');
-}
 
 void playManual(void)
 {
@@ -239,16 +245,32 @@ void playManual(void)
 			uint8_t index = chooseClub(distance);
 			char holeInfo[20] = {0};
 			char distInfo[20] = {0};
+			char timeInfo[20] = {0};
 			sprintf(holeInfo, "Hole: %2d", holeNumber);
 			sprintf(distInfo, "%3d yards  Club: %2d", distance, index);
+			if(settings[MODE_INDEX] == 0)
+			{
+				utcToMST(fields[1], timeInfo);
+				LCD_DisplayString(3, timeInfo, 20);
+			}
 			LCD_DisplayString(0, courseList[courseNumber].name, 20);
 			LCD_DisplayString(1, holeInfo, 20);
 			LCD_DisplayString(2, distInfo, 20);
-			key = getChar();
+			if(settings[MODE_INDEX] == 1)
+			{
+				key = getChar();
+			}
+			else
+			{
+				key = keypadPoll();
+			}
 			switch(key)
 			{
 				case 'A' : if(holeNumber < 18){holeNumber++;} break;
 				case 'B' : if(holeNumber > 1){holeNumber--;} break;
+				case 'C' : break;
+				case 'D' : break;
+				case '#' : break;
 				default: break;
 			}
 		}
@@ -271,10 +293,21 @@ uint8_t chooseClub(uint16_t distance)
 	for(int i = 0; i < 12; i++)
 	{
 		newDiff = abs(clubs[i]-distance);
-		if(newDiff <= diff)
+		if(settings[PREF_INDEX] == 0)
 		{
-			diff = newDiff;
-			index = i;
+			if(newDiff <= diff)
+			{
+				diff = newDiff;
+				index = i;
+			}
+		}
+		else
+		{
+			if(newDiff < diff)
+			{
+				diff = newDiff;
+				index = i;
+			}
 		}
 	}
 	// Add one because Club numbers start at 1

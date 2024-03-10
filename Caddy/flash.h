@@ -24,4 +24,8 @@ void lock_flash(void);
 
 void readClubs(uint16_t* clubs);
 void writeClubs(uint16_t* clubs);
+
+void readSettings(uint16_t* settings);
+void writeSettings(uint16_t* settings);
+
 #endif
