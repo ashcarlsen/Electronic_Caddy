@@ -55,10 +55,12 @@ The Automatic Caddy is easy to use. Follow these steps to get started:
 
 ## Troubleshooting
 If you encounter any issues with the Automatic Caddy a simple power cycle will solve most problems. If a power cycle does not solve the issue, follow these troubleshooting tips to resolve the issue:
+
 - The caddy is not turning on. What do I do?
   - Check the battery. If the battery is dead, charge it. 
   - If the battery is not the issue, check the power switch. If the power switch is off, turn it on.
   - If the battery and power switch are not the issue, the caddy may be damaged. Contact the manufacturer for assistance.
+  
 - The caddy is not selecting the optimal club. What do I do?
     - Check the distances you input for each club. If the distances are incorrect, input the correct distances again.
     
@@ -70,4 +72,5 @@ If you encounter any issues with the Automatic Caddy a simple power cycle will s
     
 If the steps above do not solve the issue, the caddy may be damaged. Contact the manufacturer for assistance.
 ## Conclusion
-    What should I have when I’m done?
+The Automatic Caddy is a great tool for any golfer. It is easy to use and provides the optimal club for the user. The caddy is equipped with GPS so it can track your progress down the course. Using the location information from the GPS, the caddy selects the optimal club for the user. The caddy is easy to use and safe for the user. This manual provides step-by-step instructions on how to use the Automatic Caddy, as well as information on the equipment and materials needed to operate it. The manual also provides safety warnings and troubleshooting tips to ensure that the Automatic Caddy is used safely and effectively. 
+```
