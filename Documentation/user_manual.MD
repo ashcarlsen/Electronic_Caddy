@@ -35,12 +35,39 @@ The only additional materials/tools needed are your golf clubs and golf balls.
 ![Example of materials/tools needed](./pictures/five-golf-clubs.jpg)
 <!-- <img src="./pictures/danger.png"  width="20" height="15"> -->
 
-## Safety warnings (must use icon) <img src="./pictures/danger.png"  width="20" height="15">
+## Safety warnings <img src="./pictures/danger.png"  width="20" height="15">
 
-    How do I avoid harming myself, other users, or equipment?
+- Do not use the Automatic Caddy in wet conditions. The caddy is not waterproof and can be damaged if exposed to water.
+- When storing the caddy, the battery should be disconnected,removed and stored in a cool, dry place.
+- Do not to stop the caddy from spinning by hand. This can damage the motor and the caddy.
+- Do not use the caddy if the battery is damaged or leaking.
+- If the caddy is unable to rotate, turn the caddy off immediately. Continued use will damage the motor. 
+
 ## Directions (must have images)
-    Once I’m ready to start, what – exactly – do I do?
+The Automatic Caddy is easy to use. Follow these steps to get started:
+1. To turn on the caddy, flip the power switch to the on position.
+2. Once the caddy has fully initialized, the screen will display the options for the user. 
+   - If this is the first use, the user will need to input the distance they hit the golf ball with each club. Once the user has input the distances, the caddy will be able to give the optimal club for the user.
+3. Select a course from the list of courses on the screen.
+4. Select what hole you are currently on. 
+5. Once the course and hole is selected, the caddy will display the hole number and the distance to the hole.
+6. After each hit, the user will input the distance they hit the ball. The caddy will average out the distances and select the optimal club for the user.  
+
 ## Troubleshooting
-    Something isn’t working correctly. How do I fix it?
+If you encounter any issues with the Automatic Caddy a simple power cycle will solve most problems. If a power cycle does not solve the issue, follow these troubleshooting tips to resolve the issue:
+- The caddy is not turning on. What do I do?
+  - Check the battery. If the battery is dead, charge it. 
+  - If the battery is not the issue, check the power switch. If the power switch is off, turn it on.
+  - If the battery and power switch are not the issue, the caddy may be damaged. Contact the manufacturer for assistance.
+- The caddy is not selecting the optimal club. What do I do?
+    - Check the distances you input for each club. If the distances are incorrect, input the correct distances again.
+    
+- The caddy is not displaying the correct hole number. What do I do?
+  - Check the course and hole number you selected. If the course and hole number are incorrect, select the correct course and hole number. 
+  
+- The caddy is not displaying the distance to the hole. What do I do?
+    - Check the course and hole number you selected. If the course and hole number are incorrect, select the correct course and hole number.
+    
+If the steps above do not solve the issue, the caddy may be damaged. Contact the manufacturer for assistance.
 ## Conclusion
     What should I have when I’m done?
