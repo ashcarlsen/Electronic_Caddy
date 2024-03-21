@@ -33,7 +33,6 @@ The user interacts with the caddy via the built in keypad and screen on the bag.
 The only additional materials/tools needed are your golf clubs and golf balls. 
 
 ![Example of materials/tools needed](./pictures/five-golf-clubs.jpg)
-<!-- <img src="./pictures/danger.png"  width="20" height="15"> -->
 
 ## Safety warnings <img src="./pictures/danger.png"  width="20" height="15">
 
@@ -43,22 +42,40 @@ The only additional materials/tools needed are your golf clubs and golf balls.
 - Do not use the caddy if the battery is damaged or leaking.
 - If the caddy is unable to rotate, turn the caddy off immediately. Continued use will damage the motor. 
 
-## Directions (must have images)
+## Directions
 The Automatic Caddy is easy to use. Follow these steps to get started:
 1. To turn on the caddy, flip the power switch to the on position.
-2. Once the caddy has fully initialized, the screen will display the options for the user.\
+2. Once the caddy has fully initialized, the screen will display the options for the user.
+<p align="center">
 <img src="./pictures/img1.jpg"  width="255" height="255">
-   - If this is the first use, the user will need to input the distance they hit the golf ball with each club. Once the user has input the distances, the caddy will be able to give the optimal club for the user.
-<img src="./pictures/img3.jpg" width="255" height="255">\
+</p>
+
+  - If this is the first use, the user will need to input the distance they hit the golf ball with each club. Once the user has input the distances, the caddy will be able to give the optimal club for the user.
+  
+  
+<p align="center">
+<img src="./pictures/img3.jpg" width="255" height="255">
 <img src="./pictures/img4.jpg" width="255" height="255">
-3. If wanted, Option 3 allows for custom preferences in club selection and operation mode.\
-<img src="./pictures/img5.jpg" width="255" height="255">\
-<img src="./pictures/img6.jpg" width="255" height="255">\
-4. Select a course from the list of courses on the screen.\
+</p>
+
+3. If wanted, Option 3 allows for custom preferences in club selection and operation mode.
+<p align="center">
+<img src="./pictures/img5.jpg" width="255" height="255">
+<img src="./pictures/img6.jpg" width="255" height="255">
+</p>
+
+4. Select a course from the list of courses on the screen.
+<p align="center">
 <img src="./pictures/img2.jpg"  width="255" height="255">
-   - The course will start on Hole 1. Press 'A' to go to the next hole. Press 'B' to return to the previous hole.
+</p>
+
+  - The course will start on Hole 1. Press 'A' to go to the next hole. Press 'B' to return to the previous hole.
+
 5. Once the course and hole is selected, the caddy will display the hole number and the distance to the hole.
+<p align="center">
 <img src="./pictures/img7.jpg"  width="255" height="255">
+</p>
+
 6. After each hit, the user will input the distance they hit the ball. The caddy will average out the distances and select the optimal club for the user.  
 
 ## Troubleshooting
@@ -81,4 +98,3 @@ If you encounter any issues with the Automatic Caddy a simple power cycle will s
 If the steps above do not solve the issue, the caddy may be damaged. Contact the manufacturer for assistance.
 ## Conclusion
 The Automatic Caddy is a great tool for any golfer. It is easy to use and provides the optimal club for the user. The caddy is equipped with GPS so it can track your progress down the course. Using the location information from the GPS, the caddy selects the optimal club for the user. The caddy is easy to use and safe for the user. This manual provides step-by-step instructions on how to use the Automatic Caddy, as well as information on the equipment and materials needed to operate it. The manual also provides safety warnings and troubleshooting tips to ensure that the Automatic Caddy is used safely and effectively. 
-```
