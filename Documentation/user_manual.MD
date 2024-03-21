@@ -46,11 +46,19 @@ The only additional materials/tools needed are your golf clubs and golf balls.
 ## Directions (must have images)
 The Automatic Caddy is easy to use. Follow these steps to get started:
 1. To turn on the caddy, flip the power switch to the on position.
-2. Once the caddy has fully initialized, the screen will display the options for the user. 
+2. Once the caddy has fully initialized, the screen will display the options for the user.\
+<img src="./pictures/img1.jpg"  width="255" height="255">
    - If this is the first use, the user will need to input the distance they hit the golf ball with each club. Once the user has input the distances, the caddy will be able to give the optimal club for the user.
-3. Select a course from the list of courses on the screen.
-4. Select what hole you are currently on. 
+<img src="./pictures/img3.jpg" width="255" height="255">\
+<img src="./pictures/img4.jpg" width="255" height="255">
+3. If wanted, Option 3 allows for custom preferences in club selection and operation mode.\
+<img src="./pictures/img5.jpg" width="255" height="255">\
+<img src="./pictures/img6.jpg" width="255" height="255">\
+4. Select a course from the list of courses on the screen.\
+<img src="./pictures/img2.jpg"  width="255" height="255">
+   - The course will start on Hole 1. Press 'A' to go to the next hole. Press 'B' to return to the previous hole.
 5. Once the course and hole is selected, the caddy will display the hole number and the distance to the hole.
+<img src="./pictures/img7.jpg"  width="255" height="255">
 6. After each hit, the user will input the distance they hit the ball. The caddy will average out the distances and select the optimal club for the user.  
 
 ## Troubleshooting
