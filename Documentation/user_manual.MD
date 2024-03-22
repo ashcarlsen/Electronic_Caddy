@@ -26,7 +26,7 @@ The Automatic Caddy is a motorized caddy that is designed to carry golf clubs an
 
 The user interacts with the caddy via the built in keypad and screen on the bag. They keypad allows the user to select from the options on the screen. They keypad allows the user to submit how far they hit the golf ball and the bag will average out the distance and select the optimal club for the user.
 
-![Insert image here when we have one](./pictures/five-golf-clubs.jpg)
+![Golf Bag](./pictures/bag.jpg)
 
 
 ## List of materials/tools needed
