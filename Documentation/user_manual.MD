@@ -13,8 +13,8 @@
   - [Introduction](#introduction)
   - [Description of Equipment](#description-of-equipment)
   - [List of materials/tools needed](#list-of-materialstools-needed)
-  - [Safety warnings](#safety-warnings-must-use-icon)
-  - [Directions](#directions-must-have-images)
+  - [Safety warnings](#safety-warnings)
+  - [Directions](#directions)
   - [Troubleshooting](#troubleshooting)
   - [Conclusion](#conclusion)
   
@@ -34,16 +34,23 @@ The only additional materials/tools needed are your golf clubs and golf balls.
 
 ![Example of materials/tools needed](./pictures/five-golf-clubs.jpg)
 
-## Safety warnings <img src="./pictures/danger.png"  width="20" height="15">
 
-- Do not use the Automatic Caddy in wet conditions. The caddy is not waterproof and can be damaged if exposed to water.
-- When storing the caddy, the battery should be disconnected,removed and stored in a cool, dry place.
-- Do not to stop the caddy from spinning by hand. This can damage the motor and the caddy.
-- Do not use the caddy if the battery is damaged or leaking.
-- If the caddy is unable to rotate, turn the caddy off immediately. Continued use will damage the motor. 
+## Safety warnings 
+
+<img src="./pictures/danger.png"  width="20" height="15"> Do not use the Automatic Caddy in wet conditions. The caddy is not waterproof and can be damaged if exposed to water.
+
+<img src="./pictures/danger.png"  width="20" height="15"> When storing the caddy, the battery should be disconnected,removed and stored in a cool, dry place.
+
+<img src="./pictures/danger.png"  width="20" height="15"> Do not to stop the caddy from spinning by hand. This can damage the motor and the caddy.
+
+<img src="./pictures/danger.png"  width="20" height="15"> Do not use the caddy if the battery is damaged or leaking.
+
+<img src="./pictures/danger.png"  width="20" height="15">
+ If the caddy is unable to rotate, turn the caddy off immediately. Continued use will damage the motor. 
 
 ## Directions
-The Automatic Caddy is easy to use. Follow these steps to get started:
+
+  The Automatic Caddy is easy to use. Follow these steps to get started:
 1. To turn on the caddy, flip the power switch to the on position.
 2. Once the caddy has fully initialized, the screen will display the options for the user.
 <p align="center">
@@ -96,5 +103,6 @@ If you encounter any issues with the Automatic Caddy a simple power cycle will s
     - Check the course and hole number you selected. If the course and hole number are incorrect, select the correct course and hole number.
     
 If the steps above do not solve the issue, the caddy may be damaged. Contact the manufacturer for assistance.
+
 ## Conclusion
 The Automatic Caddy is a great tool for any golfer. It is easy to use and provides the optimal club for the user. The caddy is equipped with GPS so it can track your progress down the course. Using the location information from the GPS, the caddy selects the optimal club for the user. The caddy is easy to use and safe for the user. This manual provides step-by-step instructions on how to use the Automatic Caddy, as well as information on the equipment and materials needed to operate it. The manual also provides safety warnings and troubleshooting tips to ensure that the Automatic Caddy is used safely and effectively. 
