@@ -15,3 +15,5 @@ NOTE: Maybe use internal pull-up instead
 
 Motor:
 TBD - Most likely A pins
+C1,2 = input pins for motor encoder
+C3 = output pin for motor spinning

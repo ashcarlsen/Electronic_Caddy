@@ -69,6 +69,7 @@ void mainMenu(void)
 	LCD_DisplayString(2, "2. Edit Yardages\0", 17); 
 	LCD_DisplayString(3, "3. Edit Settings\0", 17);
 	selection = keypadPoll();
+	// Change this to getChar()
 	while(selection == 'z')
 	{ 
 		selection = keypadPoll();
