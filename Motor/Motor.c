@@ -8,4 +8,6 @@ void prvMotorGPIO_Setup(void)
 	GPIOC->MODER &= ~GPIO_MODER_MODE2;
 	GPIOC->MODER &= ~GPIO_MODER_MODE3;
 	GPIOC->MODER |= GPIO_MODER_MODE3_0; // set pin 3 to output
+	GPIOC->MODER &= ~GPIO_MODER_MODE0;
+	GPIOC->MODER |= GPIO_MODER_MODE0_0; // set pin 0 to output
 }
