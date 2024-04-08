@@ -19,7 +19,7 @@
   - [Conclusion](#conclusion)
   
 ## Introduction
-This manual is for the Automatic Caddy. It is designed to be easy to use and safe for the user. This manual will provide step-by-step instructions on how to use the Automatic Caddy, as well as information on the equipment and materials needed to operate it. The manual will also provide safety warnings and troubleshooting tips to ensure that the Automatic Caddy is used safely and effectively.
+This manual is for the Automatic Caddy. It is designed to be easy to use and safe for the user. This manual will provide step-by-step instructions on how to use the Automatic Caddy, as well as information on the equipment and materials needed to operate it. The manual will also provide safety warnings and troubleshooting tips indicated by <img src="./pictures/danger.png"  width="20" height="15"> to ensure that the Automatic Caddy is used safely and effectively.
 
 ## Description of Equipment
 The Automatic Caddy is a motorized caddy that is designed to carry golf clubs and other equipment. It is equipped with a motor and a battery, which allows it to select and present the optimal club to the user. The caddy is equipped with GPS so it can track your progress down the course. Using the location information from the GPS, the caddy selects the optimal club for the user. 
@@ -50,7 +50,7 @@ The only additional materials/tools needed are your golf clubs and golf balls.
 
 ## Directions
 
-  The Automatic Caddy is easy to use. Follow these steps to get started:
+The Automatic Caddy is easy to use. Courses are preloaded to the bag. New courses can be loaded by the manufacturer. Follow these steps to get started:
 1. To turn on the caddy, flip the power switch to the on position.
 2. Once the caddy has fully initialized, the screen will display the options for the user.
 <p align="center">
@@ -80,7 +80,7 @@ The only additional materials/tools needed are your golf clubs and golf balls.
 
 5. Once the course and hole is selected, the caddy will display the hole number and the distance to the hole.
 <p align="center">
-<img src="./pictures/img7.jpg"  width="255" height="255">
+<img src="./pictures/img7.jpg"  width="300" height="355">
 </p>
 
 6. After each hit, the user will input the distance they hit the ball. The caddy will average out the distances and select the optimal club for the user.  
@@ -91,7 +91,7 @@ If you encounter any issues with the Automatic Caddy a simple power cycle will s
 - The caddy is not turning on. What do I do?
   - Check the battery. If the battery is dead, charge it. 
   - If the battery is not the issue, check the power switch. If the power switch is off, turn it on.
-  - If the battery and power switch are not the issue, the caddy may be damaged. Contact the manufacturer for assistance.
+  - <img src="./pictures/danger.png"  width="20" height="15"> If the battery and power switch are not the issue, the caddy may be damaged. Contact the manufacturer for assistance.
   
 - The caddy is not selecting the optimal club. What do I do?
     - Check the distances you input for each club. If the distances are incorrect, input the correct distances again.
@@ -101,6 +101,17 @@ If you encounter any issues with the Automatic Caddy a simple power cycle will s
   
 - The caddy is not displaying the distance to the hole. What do I do?
     - Check the course and hole number you selected. If the course and hole number are incorrect, select the correct course and hole number.
+
+- The caddy is not displaying the options on the screen. What do I do?
+  - Check the power switch. If the power switch is off, turn it on.
+  - Check the battery. If the battery is dead, charge it.
+  - <img src="./pictures/danger.png"  width="20" height="15"> Check wires and connections. If the wires and connections are loose, tighten them.
+
+- The keypad is not responding. What do I do?
+  - Check the power switch. If the power switch is off, turn it on.
+  - Check the battery. If the battery is dead, charge it.
+  - <img src="./pictures/danger.png"  width="20" height="15"> Check the wires and connections. If the wires and connections are loose, tighten them.
+  - <img src="./pictures/danger.png"  width="20" height="15"> Check the keypad. If the keypad is damaged, contact the manufacturer for assistance.
     
 If the steps above do not solve the issue, the caddy may be damaged. Contact the manufacturer for assistance.
 
