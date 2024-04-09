@@ -68,12 +68,13 @@ void EXTI1_IRQHandler(void){
 	}
 }
 
+void clubSpin(uint16_t club);
 void clockwise(void);
 void counter_clockwise(void);
 void motorOff(void);
 
 int main()
-{
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         {
 	pos = 0;
 	rotations = 0;
 	club_pos = 1;
@@ -83,16 +84,52 @@ int main()
 	GPIOC->MODER &= 0xF2FFFFFF;
 	while(1)
 	{
-		if((GPIOC->IDR & 0x00002000) == 0)
+		clubSpin(7);
+	}
+	return 0;
+}
+
+void clubSpin(uint16_t club)
+{
+	int cur_pos = club_pos;
+	uint8_t direction = 0;
+	if(cur_pos > club)
+	{
+		if((cur_pos - club) < 6)
 		{
-			clockwise();
+			direction = 0;
 		}
 		else
 		{
-			motorOff();
+			direction = 1;
 		}
 	}
-	return 0;
+	else
+	{
+		if((club - cur_pos) < 6)
+		{
+			direction = 1;
+		}
+		else
+		{
+			direction = 0;
+		}
+	}
+	if(club <= 12 && club >= 1)
+	{
+		while(club_pos != club)
+		{
+			if(direction)
+			{
+				clockwise();
+			}
+			else
+			{
+				counter_clockwise();
+			}
+		}
+		motorOff();
+	}
 }
 
 void clockwise(void)
