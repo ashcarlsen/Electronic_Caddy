@@ -6,7 +6,7 @@
 #define TEN_COUNT 56
 
 static int pos;
-static float rotations;
+static int rotations;
 static uint16_t club_pos;
 
 void EXTI_Init(void) {
@@ -32,8 +32,8 @@ void EXTI1_IRQHandler(void){
 		}
 		if(pos >= TEN_COUNT)
 		{
-			rotations += 0.1;
-			if(rotations >= 0.4)
+			rotations += 1;
+			if(rotations >= 4)
 			{
 				if(club_pos == 12)
 				{
@@ -49,8 +49,8 @@ void EXTI1_IRQHandler(void){
 		}
 		else if(pos <= -TEN_COUNT)
 		{
-			rotations -= 0.1;
-			if(rotations <= -0.4)
+			rotations -= 1;
+			if(rotations <= -4)
 			{
 				if(club_pos == 1)
 				{
@@ -70,6 +70,7 @@ void EXTI1_IRQHandler(void){
 
 void clockwise(void);
 void counter_clockwise(void);
+void motorOff(void);
 
 int main()
 {
@@ -88,8 +89,7 @@ int main()
 		}
 		else
 		{
-			GPIOC->ODR &= 0xFFFFFFF7; //C3 off
-			//counter_clockwise();
+			motorOff();
 		}
 	}
 	return 0;
@@ -105,4 +105,10 @@ void counter_clockwise(void)
 {
 			GPIOC->ODR &= 0xFFFFFFF7; //C3 off
 			GPIOC->ODR |= 0x00000001; // C0 on
+}
+
+void motorOff(void)
+{
+	GPIOC->ODR &= 0xFFFFFFF7; //C3 off
+	GPIOC->ODR &= 0xFFFFFFFE; // C0 off
 }
