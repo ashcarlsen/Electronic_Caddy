@@ -9,6 +9,7 @@
 #include "keypad.h"
 #include "flash.h"
 #include "Course.h"
+#include "Motor.h"
 #include "UTC.h"
 
 #define MODE_INDEX 0
@@ -32,6 +33,71 @@ static const struct course courseList[4] = {
 {.name = "Montpelier Golf", .latitudes = {0}, .longitudes = {0}, .altitudes = {0}},
 };
 
+#define TEN_COUNT 56
+
+static int pos;
+static int rotations;
+static uint16_t club_pos;
+
+void EXTI_Init(void) {
+	RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
+	SYSCFG->EXTICR[0] &= ~SYSCFG_EXTICR1_EXTI1; 
+	SYSCFG->EXTICR[0] |= SYSCFG_EXTICR1_EXTI1_PC;
+
+	EXTI->RTSR1 |= EXTI_RTSR1_RT1;
+
+	EXTI->IMR1 |= EXTI_IMR1_IM1;
+	NVIC_EnableIRQ(EXTI1_IRQn);
+}
+
+void EXTI1_IRQHandler(void){
+	if((EXTI->PR1 & EXTI_PR1_PIF1) == EXTI_PR1_PIF1){
+		if(GPIOC->IDR & 0x00000004)
+		{
+			pos = pos + 1;
+		}
+		else
+		{
+			pos = pos - 1;
+		}
+		if(pos >= TEN_COUNT)
+		{
+			rotations += 1;
+			if(rotations >= 4)
+			{
+				if(club_pos == 12)
+				{
+					club_pos = 1;
+				}
+				else
+				{
+					club_pos += 1;
+				}
+				rotations = 0;
+			}
+			pos = 0;
+		}
+		else if(pos <= -TEN_COUNT)
+		{
+			rotations -= 1;
+			if(rotations <= -4)
+			{
+				if(club_pos == 1)
+				{
+					club_pos = 12;
+				}
+				else
+				{
+					club_pos -= 1;
+				}
+				rotations = 0;
+			}
+			pos = 0;
+		}
+		EXTI->PR1 |= EXTI_PR1_PIF1;
+	}
+}
+
 void mainMenu(void);
 void editClubs(void);
 void editSettings(void);
@@ -46,6 +112,11 @@ int main(void)
   RCC->CFGR |= RCC_CFGR_SW_HSI;    // make HSI the system clock
 	SystemCoreClockUpdate();
 	SetupTIM4();	// Setup TIM4 to be able to delay. MUST be done before LCD
+	pos = 0;
+	rotations = 0;
+	club_pos = 1; // need to write flash stuff for club_pos read and write
+	EXTI_Init();
+	prvMotorGPIO_Setup();
 	LCD_Init();
 	LCD_Clear();
 	GPS_Init();
