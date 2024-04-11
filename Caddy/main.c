@@ -15,6 +15,8 @@
 #define MODE_INDEX 0
 #define PREF_INDEX 1
 
+static uint16_t test = 1;
+
 static char rxBuffer[BUFFER_SIZE] ={0};
 static uint16_t clubs[12] = {0};
 static uint8_t courseNumber = 0;
@@ -104,17 +106,17 @@ void editSettings(void);
 void selectCourse(void);
 void playManual(void);
 uint8_t chooseClub(uint16_t distance);
+void clubSpin(uint16_t club);
 
 int main(void)
 {
-	RCC->CR |= RCC_CR_HSION;            // enable HSI (internal 16 MHz clock)
-  while ((RCC->CR & RCC_CR_HSIRDY) == 0);
-  RCC->CFGR |= RCC_CFGR_SW_HSI;    // make HSI the system clock
-	SystemCoreClockUpdate();
-	SetupTIM4();	// Setup TIM4 to be able to delay. MUST be done before LCD
 	pos = 0;
 	rotations = 0;
-	club_pos = 1; // need to write flash stuff for club_pos read and write
+	RCC->CR |= RCC_CR_HSION;            // enable HSI (internal 16 MHz clock)
+ 	while ((RCC->CR & RCC_CR_HSIRDY) == 0);
+ 	RCC->CFGR |= RCC_CFGR_SW_HSI;    // make HSI the system clock
+	SystemCoreClockUpdate();
+	SetupTIM4();	// Setup TIM4 to be able to delay. MUST be done before LCD
 	EXTI_Init();
 	prvMotorGPIO_Setup();
 	LCD_Init();
@@ -123,6 +125,7 @@ int main(void)
 	SetupKeypad();
 	readClubs(clubs);
 	readSettings(settings);
+	club_pos = readPosition();
 
   while(1)
 	{
@@ -143,7 +146,7 @@ void mainMenu(void)
 	// Change this to getChar()
 	while(selection == 'z')
 	{ 
-		selection = keypadPoll();
+		selection = getChar();
 		if(!(selection == '1' || selection == '2' || selection == '3'))
 		{
 			selection = 'z';
@@ -179,6 +182,7 @@ void editClubs(void)
 		do
 		{
 			LCD_DisplayString(0, buffer, 20);
+			clubSpin(i);
 			uint16_t val = keypadInt();
 			sprintf(buffer2, "%d?", val);
 			LCD_DisplayString(1, buffer2, 20);
@@ -212,11 +216,11 @@ void editSettings(void)
 		key = getChar();
 		if(key == 'A')
 		{
-			settings[MODE_INDEX] = 1;
+			settings[MODE_INDEX] = 0;
 		}
 		else if(key == 'B')
 		{
-			settings[MODE_INDEX] = 0;
+			settings[MODE_INDEX] = 1;
 		}
 		else if(key == '*')
 		{
@@ -236,11 +240,11 @@ void editSettings(void)
 		key = getChar();
 		if(key == 'A')
 		{
-			settings[PREF_INDEX] = 1;
+			settings[PREF_INDEX] = 0;
 		}
 		else if(key == 'B')
 		{
-			settings[PREF_INDEX] = 0;
+			settings[PREF_INDEX] = 1;
 		}
 		else if(key == '*')
 		{
@@ -315,12 +319,13 @@ void playManual(void)
 				distance = 0;
 			}
 			uint8_t index = chooseClub(distance);
+			clubSpin(index);
 			char holeInfo[20] = {0};
 			char distInfo[20] = {0};
 			char timeInfo[20] = {0};
 			sprintf(holeInfo, "Hole: %2d", holeNumber);
 			sprintf(distInfo, "%3d yards  Club: %2d", distance, index);
-			if(settings[MODE_INDEX] == 0)
+			if(settings[MODE_INDEX] == 1)
 			{
 				utcToMST(fields[1], timeInfo);
 				LCD_DisplayString(3, timeInfo, 20);
@@ -328,7 +333,7 @@ void playManual(void)
 			LCD_DisplayString(0, courseList[courseNumber].name, 20);
 			LCD_DisplayString(1, holeInfo, 20);
 			LCD_DisplayString(2, distInfo, 20);
-			if(settings[MODE_INDEX] == 1)
+			if(settings[MODE_INDEX] == 0)
 			{
 				key = getChar();
 			}
@@ -384,4 +389,48 @@ uint8_t chooseClub(uint16_t distance)
 	}
 	// Add one because Club numbers start at 1
 	return index + 1;
+}
+
+void clubSpin(uint16_t club)
+{
+	int cur_pos = club_pos;
+	uint8_t direction = 0;
+	if(cur_pos > club)
+	{
+		if((cur_pos - club) < 6)
+		{
+			direction = 0;
+		}
+		else
+		{
+			direction = 1;
+		}
+	}
+	else
+	{
+		if((club - cur_pos) < 6)
+		{
+			direction = 1;
+		}
+		else
+		{
+			direction = 0;
+		}
+	}
+	if(club <= 12 && club >= 1)
+	{
+		while(club_pos != club)
+		{
+			if(direction)
+			{
+				counter_clockwise();
+			}
+			else
+			{
+				clockwise();
+			}
+		}
+		motorOff();
+	}
+	writePosition(club_pos);
 }

@@ -28,4 +28,7 @@ void writeClubs(uint16_t* clubs);
 void readSettings(uint16_t* settings);
 void writeSettings(uint16_t* settings);
 
+uint16_t readPosition(void);
+void writePosition(uint16_t position);
+
 #endif

@@ -84,7 +84,7 @@ int main()
 	GPIOC->MODER &= 0xF2FFFFFF;
 	while(1)
 	{
-		clubSpin(7);
+		clubSpin(6);
 	}
 	return 0;
 }
@@ -121,24 +121,24 @@ void clubSpin(uint16_t club)
 		{
 			if(direction)
 			{
-				clockwise();
+				counter_clockwise();
 			}
 			else
 			{
-				counter_clockwise();
+				clockwise();
 			}
 		}
 		motorOff();
 	}
 }
 
-void clockwise(void)
+void counter_clockwise(void)
 {
 			GPIOC->ODR &= 0xFFFFFFFE; // C0 off
 			GPIOC->ODR |= 0x00000008; // C3 on
 }
 
-void counter_clockwise(void)
+void clockwise(void)
 {
 			GPIOC->ODR &= 0xFFFFFFF7; //C3 off
 			GPIOC->ODR |= 0x00000001; // C0 on

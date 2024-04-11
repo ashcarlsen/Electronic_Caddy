@@ -14,6 +14,11 @@ PB8-11 Cols: Input, external pull-up 2.2k and 3.3V
 NOTE: Maybe use internal pull-up instead
 
 Motor:
-TBD - Most likely A pins
 C1,2 = input pins for motor encoder
+C2 = White encoder line
+C3 = Yellow encoder line
+
 C3 = output pin for motor spinning
+C3 = Black wire, first on driver
+C0 = Orange wire, second on driver
+C0 = other output for direction control

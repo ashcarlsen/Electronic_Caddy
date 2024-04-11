@@ -1,4 +1,7 @@
  #include "flash.h"
+ #define CLUB_ADDRESS 0x080FF800
+ #define SETTINGS_ADDRESS 0x08080000
+ #define POSITION_ADDRESS 0x08080800
  
  /** @brief Wait until Last Operation has Ended
  * This loops indefinitely until an operation (write or erase) has completed
@@ -143,7 +146,7 @@ void readClubs(uint16_t* clubs)
 	uint16_t copy[12];
 	for(int i = 0; i < 3; i++)
 	{
-		data = (*(volatile uint64_t *)(0x080FF800+8*i));
+		data = (*(volatile uint64_t *)(CLUB_ADDRESS+8*i));
 		copy[i*4] = (uint16_t)data;
 		data = data >> 16;
 		copy[i*4+1] = (uint16_t)data;
@@ -169,7 +172,7 @@ void writeClubs(uint16_t* clubs)
 		data |= ((uint64_t)clubs[i+1] << 16);
 		data |= ((uint64_t)clubs[i+2] << 32);
 		data |= ((uint64_t)clubs[i+3] << 48);
-		flash_program_double_word(0x080FF800+offset, data);
+		flash_program_double_word(CLUB_ADDRESS+offset, data);
 		offset += 8;
 	}
 }
@@ -178,7 +181,7 @@ void readSettings(uint16_t* settings)
 {
 	uint64_t data = 0;
 	uint16_t copy[2];
-	data = (*(volatile uint64_t *)(0x08080000));
+	data = (*(volatile uint64_t *)(SETTINGS_ADDRESS));
 	copy[0] = (uint16_t)data;
 	data = data >> 16;
 	copy[1] = (uint16_t)data;
@@ -190,9 +193,30 @@ void readSettings(uint16_t* settings)
 
 void writeSettings(uint16_t* settings)
 {
-	flash_erase_page(2, 1);
+	flash_erase_page(2, 0);
 	uint64_t data = 0;
 	data = settings[0];
 	data |= ((uint64_t)settings[1] << 16);
-	flash_program_double_word(0x08080000, data);
+	flash_program_double_word(SETTINGS_ADDRESS, data);
+}
+
+uint16_t readPosition(void)
+{
+	uint64_t data = 0;
+	uint16_t copy = 0;
+	data = (*(volatile uint64_t *)(POSITION_ADDRESS));
+	copy = (uint16_t)data;
+	if(copy > 12 || copy == 0)
+	{
+		copy = 1;
+	}
+	return copy;
+}
+
+void writePosition(uint16_t position)
+{
+	flash_erase_page(2, 1);
+	uint64_t data = 0;
+	data = position;
+	flash_program_double_word(POSITION_ADDRESS, data);
 }
