@@ -1,9 +1,9 @@
 #include "stm32l476xx.h"
 #include "Motor.h"
 
-#define POS_COUNT 576
-#define HALF_COUNT 280
-#define TEN_COUNT 56
+#define POS_COUNT 1130
+#define HALF_COUNT 561
+#define TEN_COUNT 113
 
 static int pos;
 static int rotations;
@@ -33,6 +33,7 @@ void EXTI1_IRQHandler(void){
 		if(pos >= TEN_COUNT)
 		{
 			rotations += 1;
+			/*
 			if(rotations >= 4)
 			{
 				if(club_pos == 12)
@@ -45,11 +46,13 @@ void EXTI1_IRQHandler(void){
 				}
 				rotations = 0;
 			}
+			*/
 			pos = 0;
 		}
 		else if(pos <= -TEN_COUNT)
 		{
 			rotations -= 1;
+			/*
 			if(rotations <= -4)
 			{
 				if(club_pos == 1)
@@ -62,6 +65,7 @@ void EXTI1_IRQHandler(void){
 				}
 				rotations = 0;
 			}
+			*/
 			pos = 0;
 		}
 		EXTI->PR1 |= EXTI_PR1_PIF1;
@@ -82,10 +86,12 @@ int main()
 	prvMotorGPIO_Setup();
 	// Set GPIOC pin 13 to input for Button
 	GPIOC->MODER &= 0xF2FFFFFF;
-	while(1)
+	while(rotations != 10)
 	{
-		clubSpin(6);
+		clockwise();
 	}
+	motorOff();
+	while(1);
 	return 0;
 }
 

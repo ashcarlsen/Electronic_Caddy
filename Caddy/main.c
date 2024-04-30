@@ -35,7 +35,7 @@ static const struct course courseList[4] = {
 {.name = "Montpelier Golf", .latitudes = {0}, .longitudes = {0}, .altitudes = {0}},
 };
 
-#define TEN_COUNT 56
+#define TEN_COUNT 95
 
 static int pos;
 static int rotations;
@@ -65,7 +65,7 @@ void EXTI1_IRQHandler(void){
 		if(pos >= TEN_COUNT)
 		{
 			rotations += 1;
-			if(rotations >= 4)
+			if(rotations >= 5)
 			{
 				if(club_pos == 12)
 				{
@@ -82,7 +82,7 @@ void EXTI1_IRQHandler(void){
 		else if(pos <= -TEN_COUNT)
 		{
 			rotations -= 1;
-			if(rotations <= -4)
+			if(rotations <= -5)
 			{
 				if(club_pos == 1)
 				{
@@ -399,28 +399,29 @@ void clubSpin(uint16_t club)
 	{
 		if((cur_pos - club) < 6)
 		{
-			direction = 0;
+			direction = 1;
 		}
 		else
 		{
-			direction = 1;
+			direction = 0;
 		}
 	}
 	else
 	{
 		if((club - cur_pos) < 6)
 		{
-			direction = 1;
+			direction = 0;
 		}
 		else
 		{
-			direction = 0;
+			direction = 1;
 		}
 	}
 	if(club <= 12 && club >= 1)
 	{
 		while(club_pos != club)
 		{
+			/*
 			if(direction)
 			{
 				counter_clockwise();
@@ -429,6 +430,8 @@ void clubSpin(uint16_t club)
 			{
 				clockwise();
 			}
+			*/
+			counter_clockwise();
 		}
 		motorOff();
 	}
